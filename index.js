@@ -45,6 +45,11 @@ app.get("/profile/:name/:id([0-9]{5})", (req, res) => {
   });
 });
 
+//? handling wrong url
+app.get("*", (req, res) => {
+  res.send(`Invalid URL`);
+});
+
 app.listen(PORT, () => {
   console.log(`Server is Running ${PORT}`);
 });
