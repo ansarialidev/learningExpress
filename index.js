@@ -1,55 +1,32 @@
 import express from "express";
 
+//* -------Learning Middleware-----------
+
 const app = express();
 const PORT = 3000;
-//!http Module in express js
 
-app.use(express.json());
+app.use("/welcome", (req, res, next) => {
+  console.log(`start middleware`);
 
-//?performing get request
+  res.on("finish", () => {
+    console.log(`finish middleware`);
+  });
+  next();
+});
+
+app.get("/welcome", (req, res) => {
+  console.log("route");
+  res.send("welcome back express page");
+});
+
+// app.use((req, res, next) => {
+//   console.log(`Middleware executed successfully`);
+//   next();
+// });
 app.get("/", (req, res) => {
-  res.send("Welcome back user");
-});
-
-//? performing post request
-app.post("/user", (req, res) => {
-  const { name, email } = req.body;
-  res.json({
-    message: `user ${name} with email ${email} created successfully`,
-  });
-});
-
-//? performing put method
-app.put("/user/:id", (req, res) => {
-  const userID = req.params.id;
-  const { name, email } = req.body;
-  res.json({
-    message: `User ${userID} updated on ${name} ${email}`,
-  });
-});
-
-//? performimg delete method
-app.delete("/user/:id", (req, res) => {
-  const userID = req.params.id;
-  res.json({
-    message: `user with ID ${userID} deleted successfullt`,
-  });
-});
-
-//? performing get method
-app.get("/profile/:name/:id([0-9]{5})", (req, res) => {
-  const { name, id } = req.params;
-  res.json({
-    id,
-    name,
-  });
-});
-
-//? handling wrong url
-app.get("*", (req, res) => {
-  res.send(`Invalid URL`);
+  res.send(`Hello Express`);
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is Running ${PORT}`);
+  console.log(`server is running on ${PORT}`);
 });
